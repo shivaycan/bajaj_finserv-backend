@@ -1,78 +1,54 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const cors = require("cors");
+const express = require("express");
+const bodyParser = require("body-parser");
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON data
 app.use(bodyParser.json());
+app.use(cors());
 
-// Helper function to check if the input is a number
-const isNumber = (val) => !isNaN(val);
+// POST endpoint
+app.post("/bfhl", (req, res) => {
+  const { data } = req.body;
 
-// Helper function to validate Base64 file input
-const isValidBase64 = (str) => {
-  try {
-    return Buffer.from(str, 'base64').toString('base64') === str;
-  } catch (error) {
-    return false;
-  }
-};
-
-// Route: Root Route ("/")
-app.get('/', (req, res) => {
-  res.send('Welcome to the BFHL API. Use /bfhl for GET/POST requests.');
-});
-
-// POST Route: /bfhl
-app.post('/bfhl', (req, res) => {
-  const { data = [], file_b64 = "" } = req.body;
-
-  // Extract numbers and alphabets from the input array
-  const numbers = data.filter(isNumber);
-  const alphabets = data.filter(val => /^[a-zA-Z]$/.test(val));
-
-  // Extract the highest lowercase alphabet
-  const lowercaseAlphabets = alphabets.filter(val => val === val.toLowerCase());
-  const highestLowercaseAlphabet = lowercaseAlphabets.length ? [lowercaseAlphabets.sort().pop()] : [];
-
-  // File handling logic
-  let file_valid = false;
-  let file_mime_type = '';
-  let file_size_kb = 0;
-
-  if (file_b64) {
-    file_valid = isValidBase64(file_b64);
-    if (file_valid) {
-      const fileBuffer = Buffer.from(file_b64, 'base64');
-      file_mime_type = 'application/octet-stream'; // Replace with the appropriate file MIME type if necessary
-      file_size_kb = (fileBuffer.length / 1024).toFixed(2); // Convert bytes to KB
-    }
+  if (!data || !Array.isArray(data)) {
+    return res.status(400).json({
+      is_success: false,
+      user_id: "Saransh_Saxena_16102003",
+      email: "sm1772@srmist.edu.in",
+      roll_number: "RA2111003030030",
+      numbers: [],
+      alphabets: [],
+      highest_alphabet: [],
+    });
   }
 
-  // Response payload
-  const response = {
+  const numbers = data.filter((item) => !isNaN(item));
+  const alphabets = data.filter(
+    (item) => isNaN(item) && /^[a-zA-Z]$/.test(item)
+  );
+  const highestAlphabet = alphabets
+    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+    .slice(-1)[0];
+
+  res.json({
     is_success: true,
-    user_id: "shivay_garg_14062002", // Format: fullname_dob
-    email: "shivaygarg65@gmail.com",
-    roll_number: "RA2111026030110", // Replace with your actual roll number
+    user_id: "Shivay_Garg_16102003",
+    email: "sr0614@srmist.edu.in",
+    roll_number: "RA2111003030110",
     numbers,
     alphabets,
-    highest_lowercase_alphabet: highestLowercaseAlphabet,
-    file_valid,
-    file_mime_type,
-    file_size_kb
-  };
-
-  // Send the response
-  res.json(response);
+    highest_alphabet: highestAlphabet ? [highestAlphabet] : [],
+  });
 });
 
-// GET Route: /bfhl
-app.get('/bfhl', (req, res) => {
-  res.json({ operation_code: 1 });
+
+// GET endpoint
+app.get("/bfhl", (req, res) => {
+  res.status(200).json({ operation_code: 1 });
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
