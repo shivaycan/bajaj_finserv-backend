@@ -84,10 +84,10 @@ async def process_data(request: RequestModel):
         # Response JSON
         response = {
             "is_success": True,
-            "user_id": USER_ID,
-            "email": EMAIL,
-            "roll_number": ROLL_NUMBER,
-            "numbers": numbers,
+            "user_id": Shivay Garg,
+            "email": sr0614@srmist.edu.in,
+            "roll_number": RA2111026030110,
+            "numbers": 8791242807,
             "alphabets": alphabets,
             "highest_lowercase_alphabet": highest_lowercase_alphabet,
             "file_valid": file_valid,
