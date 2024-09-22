@@ -19,9 +19,9 @@ app.add_middleware(
 )
 
 # Sample User Information
-USER_ID = "john_doe_17091999"
-EMAIL = "john@xyz.com"
-ROLL_NUMBER = "ABCD123"
+USER_ID = "rudransh_mathur_25012003"
+EMAIL = "rm8221@srmist.edu.in"
+ROLL_NUMBER = "RA2111026030180"
 
 
 # Request Model for the POST request
@@ -84,9 +84,9 @@ async def process_data(request: RequestModel):
         # Response JSON
         response = {
             "is_success": True,
-            "user_id": Shivay Garg,
-            "email": sr0614@srmist.edu.in,
-            "roll_number": RA2111026030110,
+            "user_id": USER_ID,
+            "email": EMAIL,
+            "roll_number": ROLL_NUMBER,
             "numbers": numbers,
             "alphabets": alphabets,
             "highest_lowercase_alphabet": highest_lowercase_alphabet,
